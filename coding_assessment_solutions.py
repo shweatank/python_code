@@ -145,7 +145,48 @@ def solve_q5(data: list[str]) -> str:
 
 def solve_q6(data: list[str]) -> str:
     # Q6: s then t -> min window substring (or empty line)
-    raise NotImplementedError
+    def minWindowSubstr(s: str, t: str) -> str:
+        if len(t) > len(s):
+            return ""
+        freq = {}
+        for c in t:
+            freq[c] = freq.get(c, 0) + 1
+
+        required = len(freq)
+
+        l, r = 0, 0
+
+        match = 0
+        window_freq = {}
+
+        minLen = float('inf')
+        minl = 0
+
+        while r < len(s):
+            c = s[r]
+            window_freq[c] = window_freq.get(c, 0) + 1
+
+            if c in freq and window_freq[c] == freq[c]:
+                match += 1
+
+            while l <= r and match == required:
+                if r - l + 1 < minLen:
+                    minLen = r - l + 1
+                    minl = l
+                left_char = s[l]
+                window_freq[left_char] -= 1
+
+                if left_char in freq and window_freq[left_char] < freq[left_char]:
+                    match -= 1
+
+                l += 1
+            r += 1
+
+        return "" if minl == float('inf') else s[minl:minl + minLen]
+    
+    s = input()
+    t = input()
+    return minWindowSubstr(s,t)
 
 def solve_q7(data: list[str]) -> str:
     # Q7: n, n lines of n ints, k -> kth smallest
