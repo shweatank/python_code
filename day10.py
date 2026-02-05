@@ -1,0 +1,4 @@
+#linting:
+class Myclass:
+    pass
+
